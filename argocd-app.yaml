@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgresql-prod
+  namespace: openshift-gitops
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/aksoydoruk/postgresql.git'
+    targetRevision: main
+    path: postgresql/overlays/prod
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: postgresql-prod
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
